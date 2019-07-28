@@ -1552,7 +1552,7 @@ func cmdSlot(cmd Cmder, pos int) int {
 	if pos == 0 {
 		return hashtag.RandomSlot()
 	}
-	firstKey := cmd.stringArg(pos)
+	firstKey := cmdStringArg(cmd.Args(), pos)
 	return hashtag.Slot(firstKey)
 }
 

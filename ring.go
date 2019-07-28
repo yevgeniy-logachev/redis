@@ -546,7 +546,7 @@ func (c *Ring) cmdShard(cmd Cmder) (*ringShard, error) {
 	if pos == 0 {
 		return c.shards.Random()
 	}
-	firstKey := cmd.stringArg(pos)
+	firstKey := cmdStringArg(cmd.Args(), pos)
 	return c.shards.GetByKey(firstKey)
 }
 
@@ -617,7 +617,7 @@ func (c *Ring) generalProcessPipeline(
 	cmdsMap := make(map[string][]Cmder)
 	for _, cmd := range cmds {
 		cmdInfo := c.cmdInfo(cmd.Name())
-		hash := cmd.stringArg(cmdFirstKeyPos(cmd, cmdInfo))
+		hash := cmdStringArg(cmd.Args(), cmdFirstKeyPos(cmd, cmdInfo))
 		if hash != "" {
 			hash = c.shards.Hash(hashtag.Key(hash))
 		}

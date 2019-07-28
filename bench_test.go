@@ -109,7 +109,7 @@ func BenchmarkRedisSetGetBytes(b *testing.B) {
 
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			if err := client.Set("key", value, 0).Err(); err != nil {
+			if err := client.SetBytes("key", value, 0).Err(); err != nil {
 				b.Fatal(err)
 			}
 

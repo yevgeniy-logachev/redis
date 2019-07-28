@@ -33,7 +33,7 @@ func (w *Writer) WriteArgs(args []interface{}) error {
 		return err
 	}
 
-	err = w.writeLen(len(args))
+	err = w.WriteLen(len(args))
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,11 @@ func (w *Writer) WriteArgs(args []interface{}) error {
 	return nil
 }
 
-func (w *Writer) writeLen(n int) error {
+func (w *Writer) WriteByte(c byte) error {
+	return w.wr.WriteByte(c)
+}
+
+func (w *Writer) WriteLen(n int) error {
 	w.lenBuf = strconv.AppendUint(w.lenBuf[:0], uint64(n), 10)
 	w.lenBuf = append(w.lenBuf, '\r', '\n')
 	_, err := w.wr.Write(w.lenBuf)
@@ -58,21 +62,21 @@ func (w *Writer) writeLen(n int) error {
 func (w *Writer) writeArg(v interface{}) error {
 	switch v := v.(type) {
 	case nil:
-		return w.string("")
+		return w.WriteString("")
 	case string:
-		return w.string(v)
+		return w.WriteString(v)
 	case []byte:
-		return w.bytes(v)
+		return w.WriteBytes(v)
 	case int:
-		return w.int(int64(v))
+		return w.WriteInt64(int64(v))
 	case int8:
-		return w.int(int64(v))
+		return w.WriteInt64(int64(v))
 	case int16:
-		return w.int(int64(v))
+		return w.WriteInt64(int64(v))
 	case int32:
-		return w.int(int64(v))
+		return w.WriteInt64(int64(v))
 	case int64:
-		return w.int(v)
+		return w.WriteInt64(v)
 	case uint:
 		return w.uint(uint64(v))
 	case uint8:
@@ -89,30 +93,30 @@ func (w *Writer) writeArg(v interface{}) error {
 		return w.float(v)
 	case bool:
 		if v {
-			return w.int(1)
+			return w.WriteInt64(1)
 		}
-		return w.int(0)
+		return w.WriteInt64(0)
 	case time.Time:
-		return w.string(v.Format(time.RFC3339))
+		return w.WriteString(v.Format(time.RFC3339))
 	case encoding.BinaryMarshaler:
 		b, err := v.MarshalBinary()
 		if err != nil {
 			return err
 		}
-		return w.bytes(b)
+		return w.WriteBytes(b)
 	default:
 		return fmt.Errorf(
 			"redis: can't marshal %T (implement encoding.BinaryMarshaler)", v)
 	}
 }
 
-func (w *Writer) bytes(b []byte) error {
+func (w *Writer) WriteBytes(b []byte) error {
 	err := w.wr.WriteByte(StringReply)
 	if err != nil {
 		return err
 	}
 
-	err = w.writeLen(len(b))
+	err = w.WriteLen(len(b))
 	if err != nil {
 		return err
 	}
@@ -125,23 +129,23 @@ func (w *Writer) bytes(b []byte) error {
 	return w.crlf()
 }
 
-func (w *Writer) string(s string) error {
-	return w.bytes(util.StringToBytes(s))
+func (w *Writer) WriteString(s string) error {
+	return w.WriteBytes(util.StringToBytes(s))
 }
 
 func (w *Writer) uint(n uint64) error {
 	w.numBuf = strconv.AppendUint(w.numBuf[:0], n, 10)
-	return w.bytes(w.numBuf)
+	return w.WriteBytes(w.numBuf)
 }
 
-func (w *Writer) int(n int64) error {
+func (w *Writer) WriteInt64(n int64) error {
 	w.numBuf = strconv.AppendInt(w.numBuf[:0], n, 10)
-	return w.bytes(w.numBuf)
+	return w.WriteBytes(w.numBuf)
 }
 
 func (w *Writer) float(f float64) error {
 	w.numBuf = strconv.AppendFloat(w.numBuf[:0], f, 'f', -1, 64)
-	return w.bytes(w.numBuf)
+	return w.WriteBytes(w.numBuf)
 }
 
 func (w *Writer) crlf() error {

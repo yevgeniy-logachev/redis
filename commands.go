@@ -110,6 +110,7 @@ type Cmdable interface {
 	MSet(pairs ...interface{}) *StatusCmd
 	MSetNX(pairs ...interface{}) *BoolCmd
 	Set(key string, value interface{}, expiration time.Duration) *StatusCmd
+	SetBytes(key string, value []byte, expiration time.Duration) *SetCmd
 	SetBit(key string, offset int64, value int) *IntCmd
 	SetNX(key string, value interface{}, expiration time.Duration) *BoolCmd
 	SetXX(key string, value interface{}, expiration time.Duration) *BoolCmd
@@ -822,7 +823,13 @@ func (c cmdable) MSetNX(pairs ...interface{}) *BoolCmd {
 // Use expiration for `SETEX`-like behavior.
 // Zero expiration means the key has no expiration time.
 func (c cmdable) Set(key string, value interface{}, expiration time.Duration) *StatusCmd {
-	args := make([]interface{}, 3, 4)
+	cmd := NewStatusCmd(setArgs(key, value, expiration)...)
+	_ = c(cmd)
+	return cmd
+}
+
+func setArgs(key string, value interface{}, expiration time.Duration) []interface{} {
+	args := make([]interface{}, 3, 5)
 	args[0] = "set"
 	args[1] = key
 	args[2] = value
@@ -833,18 +840,21 @@ func (c cmdable) Set(key string, value interface{}, expiration time.Duration) *S
 			args = append(args, "ex", formatSec(expiration))
 		}
 	}
-	cmd := NewStatusCmd(args...)
+	return args
+}
+
+func (c cmdable) SetBytes(key string, value []byte, expiration time.Duration) *SetCmd {
+	cmd := &SetCmd{
+		key: key,
+		val: value,
+		exp: expiration,
+	}
 	_ = c(cmd)
 	return cmd
 }
 
 func (c cmdable) SetBit(key string, offset int64, value int) *IntCmd {
-	cmd := NewIntCmd(
-		"setbit",
-		key,
-		offset,
-		value,
-	)
+	cmd := NewIntCmd("setbit", key, offset, value)
 	_ = c(cmd)
 	return cmd
 }
