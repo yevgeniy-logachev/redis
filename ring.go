@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 	"math/rand"
 	"strconv"
 	"sync"
@@ -135,8 +136,9 @@ func (opt *RingOptions) getPassword(shard string) string {
 //------------------------------------------------------------------------------
 
 type ringShard struct {
-	Client *Client
-	down   int32
+	Client     *Client
+	down       int32
+	maxRetries int32
 }
 
 func (shard *ringShard) String() string {
@@ -150,8 +152,7 @@ func (shard *ringShard) String() string {
 }
 
 func (shard *ringShard) IsDown() bool {
-	const threshold = 3
-	return atomic.LoadInt32(&shard.down) >= threshold
+	return atomic.LoadInt32(&shard.down) >= shard.maxRetries
 }
 
 func (shard *ringShard) IsUp() bool {
@@ -198,6 +199,10 @@ func newRingShards(opt *RingOptions) *ringShards {
 
 func (c *ringShards) Add(name string, cl *Client) {
 	shard := &ringShard{Client: cl}
+	shard.maxRetries = 3 // Default value
+	if len(c.list) == 0 {
+		shard.maxRetries = math.MaxInt32 // Keep first shard as long as possible
+	}
 	c.hash.Add(name)
 	c.shards[name] = shard
 	c.list = append(c.list, shard)
