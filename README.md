@@ -36,7 +36,7 @@ go get -u github.com/go-redis/redis
 Import:
 
 ```go
-import "github.com/go-redis/redis"
+import "github.com/yevgeniy-logachev/redis"
 ```
 
 ## Quickstart
