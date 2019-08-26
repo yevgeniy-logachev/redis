@@ -6,7 +6,7 @@ import (
 	"net"
 	"strings"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal/proto"
+	"github.com/yevgeniy-logachev/redis/internal/proto"
 )
 
 func isRetryableError(err error, retryTimeout bool) bool {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal/util"
+	"github.com/yevgeniy-logachev/redis/internal/util"
 )
 
 const (

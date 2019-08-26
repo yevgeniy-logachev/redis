@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal"
-	"github.com/yevgeniy-logachev/redis/v7/internal/pool"
-	"github.com/yevgeniy-logachev/redis/v7/internal/proto"
+	"github.com/yevgeniy-logachev/redis/internal"
+	"github.com/yevgeniy-logachev/redis/internal/pool"
+	"github.com/yevgeniy-logachev/redis/internal/proto"
 )
 
 const pingTimeout = 30 * time.Second

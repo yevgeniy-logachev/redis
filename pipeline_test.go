@@ -1,7 +1,7 @@
 package redis_test
 
 import (
-	"github.com/yevgeniy-logachev/redis/v7"
+	"github.com/yevgeniy-logachev/redis"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal/proto"
+	"github.com/yevgeniy-logachev/redis/internal/proto"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

@@ -11,10 +11,10 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal"
-	"github.com/yevgeniy-logachev/redis/v7/internal/consistenthash"
-	"github.com/yevgeniy-logachev/redis/v7/internal/hashtag"
-	"github.com/yevgeniy-logachev/redis/v7/internal/pool"
+	"github.com/yevgeniy-logachev/redis/internal"
+	"github.com/yevgeniy-logachev/redis/internal/consistenthash"
+	"github.com/yevgeniy-logachev/redis/internal/hashtag"
+	"github.com/yevgeniy-logachev/redis/internal/pool"
 )
 
 // Hash is type of hash function used in consistent hash.

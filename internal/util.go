@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal/util"
+	"github.com/yevgeniy-logachev/redis/internal/util"
 )
 
 func Sleep(ctx context.Context, dur time.Duration) error {

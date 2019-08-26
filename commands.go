@@ -5,7 +5,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/yevgeniy-logachev/redis/v7/internal"
+	"github.com/yevgeniy-logachev/redis/internal"
 )
 
 func usePrecise(dur time.Duration) bool {

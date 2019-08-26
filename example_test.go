@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/yevgeniy-logachev/redis/v7"
+	"github.com/yevgeniy-logachev/redis"
 )
 
 var rdb *redis.Client

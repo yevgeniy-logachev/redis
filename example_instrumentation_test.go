@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/yevgeniy-logachev/redis/v7"
+	"github.com/yevgeniy-logachev/redis"
 )
 
 type redisHook struct{}
