@@ -1,47 +1,48 @@
 # Redis client for Golang
 
 [![Build Status](https://travis-ci.org/go-redis/redis.png?branch=master)](https://travis-ci.org/go-redis/redis)
-[![GoDoc](https://godoc.org/github.com/go-redis/redis?status.svg)](https://godoc.org/github.com/go-redis/redis)
+[![GoDoc](https://godoc.org/github.com/yevgeniy-logachev/redis?status.svg)](https://godoc.org/github.com/yevgeniy-logachev/redis)
 [![Airbrake](https://img.shields.io/badge/kudos-airbrake.io-orange.svg)](https://airbrake.io)
 
 Supports:
 
 - Redis 3 commands except QUIT, MONITOR, SLOWLOG and SYNC.
 - Automatic connection pooling with [circuit breaker](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern) support.
-- [Pub/Sub](https://godoc.org/github.com/go-redis/redis#PubSub).
-- [Transactions](https://godoc.org/github.com/go-redis/redis#example-Client-TxPipeline).
-- [Pipeline](https://godoc.org/github.com/go-redis/redis#example-Client-Pipeline) and [TxPipeline](https://godoc.org/github.com/go-redis/redis#example-Client-TxPipeline).
-- [Scripting](https://godoc.org/github.com/go-redis/redis#Script).
-- [Timeouts](https://godoc.org/github.com/go-redis/redis#Options).
-- [Redis Sentinel](https://godoc.org/github.com/go-redis/redis#NewFailoverClient).
-- [Redis Cluster](https://godoc.org/github.com/go-redis/redis#NewClusterClient).
-- [Cluster of Redis Servers](https://godoc.org/github.com/go-redis/redis#example-NewClusterClient--ManualSetup) without using cluster mode and Redis Sentinel.
-- [Ring](https://godoc.org/github.com/go-redis/redis#NewRing).
-- [Instrumentation](https://godoc.org/github.com/go-redis/redis#ex-package--Instrumentation).
+- [Pub/Sub](https://godoc.org/github.com/yevgeniy-logachev/redis#PubSub).
+- [Transactions](https://godoc.org/github.com/yevgeniy-logachev/redis#example-Client-TxPipeline).
+- [Pipeline](https://godoc.org/github.com/yevgeniy-logachev/redis#example-Client-Pipeline) and [TxPipeline](https://godoc.org/github.com/yevgeniy-logachev/redis#example-Client-TxPipeline).
+- [Scripting](https://godoc.org/github.com/yevgeniy-logachev/redis#Script).
+- [Timeouts](https://godoc.org/github.com/yevgeniy-logachev/redis#Options).
+- [Redis Sentinel](https://godoc.org/github.com/yevgeniy-logachev/redis#NewFailoverClient).
+- [Redis Cluster](https://godoc.org/github.com/yevgeniy-logachev/redis#NewClusterClient).
+- [Cluster of Redis Servers](https://godoc.org/github.com/yevgeniy-logachev/redis#example-NewClusterClient--ManualSetup) without using cluster mode and Redis Sentinel.
+- [Ring](https://godoc.org/github.com/yevgeniy-logachev/redis#NewRing).
+- [Instrumentation](https://godoc.org/github.com/yevgeniy-logachev/redis#ex-package--Instrumentation).
 - [Cache friendly](https://github.com/go-redis/cache).
-- [Rate limiting](https://github.com/go-redis/redis_rate).
+- [Rate limiting](https://github.com/yevgeniy-logachev/redis_rate).
 - [Distributed Locks](https://github.com/bsm/redislock).
 
-API docs: https://godoc.org/github.com/go-redis/redis.
-Examples: https://godoc.org/github.com/go-redis/redis#pkg-examples.
+API docs: https://godoc.org/github.com/yevgeniy-logachev/redis.
+Examples: https://godoc.org/github.com/yevgeniy-logachev/redis#pkg-examples.
 
 ## Installation
 
-Install:
+go-redis requires a Go version with [Modules](https://github.com/golang/go/wiki/Modules) support and uses import versioning. So please make sure to initialize a Go module before installing go-redis:
 
-```shell
-go get -u github.com/go-redis/redis
+``` shell
+go mod init github.com/my/repo
+go get github.com/yevgeniy-logachev/redis/v7
 ```
 
 Import:
 
-```go
-import "github.com/yevgeniy-logachev/redis"
+``` go
+import "github.com/yevgeniy-logachev/redis/v7"
 ```
 
 ## Quickstart
 
-```go
+``` go
 func ExampleNewClient() {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
@@ -81,13 +82,13 @@ func ExampleClient() {
 
 ## Howto
 
-Please go through [examples](https://godoc.org/github.com/go-redis/redis#pkg-examples) to get an idea how to use this package.
+Please go through [examples](https://godoc.org/github.com/yevgeniy-logachev/redis#pkg-examples) to get an idea how to use this package.
 
 ## Look and feel
 
 Some corner cases:
 
-```go
+``` go
 // SET key value EX 10 NX
 set, err := client.SetNX("key", "value", 10*time.Second).Result()
 
@@ -109,7 +110,7 @@ vals, err := client.ZInterStore("out", redis.ZStore{Weights: []int64{2, 3}}, "zs
 vals, err := client.Eval("return {KEYS[1],ARGV[1]}", []string{"key"}, "hello").Result()
 
 // custom command
-res, err := client.Do("set", "key", "value")
+res, err := client.Do("set", "key", "value").Result()
 ```
 
 ## See also

@@ -139,9 +139,33 @@ func NewGeoLocationCmdResult(val []GeoLocation, err error) *GeoLocationCmd {
 	return &cmd
 }
 
+// NewGeoPosCmdResult returns a GeoPosCmd initialised with val and err for testing
+func NewGeoPosCmdResult(val []*GeoPos, err error) *GeoPosCmd {
+	var cmd GeoPosCmd
+	cmd.val = val
+	cmd.setErr(err)
+	return &cmd
+}
+
 // NewCommandsInfoCmdResult returns a CommandsInfoCmd initialised with val and err for testing
 func NewCommandsInfoCmdResult(val map[string]*CommandInfo, err error) *CommandsInfoCmd {
 	var cmd CommandsInfoCmd
+	cmd.val = val
+	cmd.setErr(err)
+	return &cmd
+}
+
+// NewXMessageSliceCmdResult returns a XMessageSliceCmd initialised with val and err for testing
+func NewXMessageSliceCmdResult(val []XMessage, err error) *XMessageSliceCmd {
+	var cmd XMessageSliceCmd
+	cmd.val = val
+	cmd.setErr(err)
+	return &cmd
+}
+
+// NewXStreamSliceCmdResult returns a XStreamSliceCmd initialised with val and err for testing
+func NewXStreamSliceCmdResult(val []XStream, err error) *XStreamSliceCmd {
+	var cmd XStreamSliceCmd
 	cmd.val = val
 	cmd.setErr(err)
 	return &cmd
